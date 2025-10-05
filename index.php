@@ -52,7 +52,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : '';
             <div class="card text-white bg-success shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Completed Appointments</h5>
-                    <p class="card-text fs-2"><?= $completedAppointments ?></p>
+                    <p class="card-text fs-2"><?= $completedAppointments ?></p>SSS
                 </div>
             </div>
         </div>

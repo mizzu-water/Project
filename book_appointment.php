@@ -38,35 +38,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate inputs
     if ($patient_id && $schedule_id && $appointment_date) {
-        // Get doctor_id from schedule
-        $stmt = $conn->prepare("SELECT doctor_id FROM schedules WHERE id = ?");
+        // Fetch schedule details once (doctor_id and day)
+        $stmt = $conn->prepare("SELECT doctor_id, day FROM schedules WHERE id = ?");
         $stmt->bind_param("i", $schedule_id);
         $stmt->execute();
-        $stmt->bind_result($doctor_id);
-        $stmt->fetch();
+        $stmt->bind_result($doctor_id, $schedule_day);
+        $hasSchedule = $stmt->fetch();
         $stmt->close();
 
-        // Check if appointment date is valid day for schedule
-        $dayOfWeek = date('l', strtotime($appointment_date));
-        $stmt = $conn->prepare("SELECT day FROM schedules WHERE id = ?");
-        $stmt->bind_param("i", $schedule_id);
-        $stmt->execute();
-        $stmt->bind_result($schedule_day);
-        $stmt->fetch();
-        $stmt->close();
-
-        if ($dayOfWeek !== $schedule_day) {
-            $message = "Appointment date does not match the schedule day ($schedule_day).";
+        if (!$hasSchedule) {
+            $message = "Selected schedule not found.";
         } else {
-            // Insert appointment
-            $stmt = $conn->prepare("INSERT INTO appointments (patient_id, doctor_id, schedule_id, appointment_date) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("iiis", $patient_id, $doctor_id, $schedule_id, $appointment_date);
-            if ($stmt->execute()) {
-                $message = "Appointment booked successfully. Appointment ID: " . $stmt->insert_id;
+            $dayOfWeek = date('l', strtotime($appointment_date));
+            if ($dayOfWeek !== $schedule_day) {
+                $message = "Appointment date does not match the schedule day ($schedule_day).";
             } else {
-                $message = "Error booking appointment: " . $conn->error;
+                // Insert appointment with explicit status so it appears in manage view
+                $status = 'Scheduled';
+                $stmt = $conn->prepare("INSERT INTO appointments (patient_id, doctor_id, schedule_id, appointment_date, status) VALUES (?, ?, ?, ?, ?)");
+                $stmt->bind_param("iiiss", $patient_id, $doctor_id, $schedule_id, $appointment_date, $status);
+                if ($stmt->execute()) {
+                    $message = "Appointment booked successfully. Appointment ID: " . $stmt->insert_id;
+                } else {
+                    $message = "Error booking appointment: " . $stmt->error;
+                }
+                $stmt->close();
             }
-            $stmt->close();
         }
     } else {
         $message = "Please fill all fields.";
