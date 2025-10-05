@@ -1,0 +1,142 @@
+/* Global clinic theme - calm, clean, modern */
+:root {
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --surface: #f9fbfd;
+  --text: #1f2937;
+  --muted: #4b5563;
+  --primary: #14b8a6; /* teal */
+  --primary-600: #0ea5a6;
+  --primary-700: #0d9488;
+  --accent: #2563eb; /* blue */
+  --border: #e5e7eb;
+  --shadow: 0 8px 24px rgba(2, 6, 23, 0.08);
+}
+
+html, body {
+  background: radial-gradient(1200px 800px at 10% 0%, #ffffff 0%, var(--bg) 60%, #eef2f7 100%);
+  color: var(--text);
+}
+
+body { min-height: 100vh; }
+
+/* Typography */
+body, .navbar, .offcanvas, .list-group-item, .btn, .form-control, .form-select, table, .card {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+h1, h2, h3, h4, h5 {
+  letter-spacing: 0.2px;
+}
+
+/* Containers */
+.container { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; }
+.container-fluid { max-width: 100%; }
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border) !important;
+}
+.navbar .navbar-brand, .navbar .navbar-text {
+  color: var(--text) !important;
+}
+.navbar .btn, .navbar .btn-outline-primary, .btn-outline-light {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+}
+.navbar .btn:hover, .btn-outline-light:hover {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+/* Offcanvas / Sidebar */
+.offcanvas {
+  background: var(--surface);
+  color: var(--text);
+}
+.list-group-item {
+  background: #ffffff;
+  color: var(--text);
+  border-color: var(--border);
+}
+.list-group-item-action:hover { background: #f1f5f9; }
+
+/* Cards */
+.card {
+  background-color: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.card-header {
+  background: #fafafa;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+}
+.btn-primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+.btn-secondary {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  color: #111827;
+}
+.btn-secondary:hover { background: #dbe1e8; }
+.btn-info { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+.btn-success { background: #22c55e; border-color: #22c55e; }
+
+/* Forms */
+.form-control, .form-select {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.form-control::placeholder { color: #9ca3af; }
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.2);
+}
+
+/* Tables */
+table.table { color: var(--text); }
+.table thead th { background: #f3f4f6; border-bottom: 1px solid var(--border); }
+.table tbody tr { background: #ffffff; }
+.table-bordered, .table-bordered td, .table-bordered th { border-color: var(--border) !important; }
+.table-striped tbody tr:nth-of-type(odd) { background: #fafafa; }
+
+/* Alerts */
+.alert-info { background: #e8f0fe; border-color: #cfe0ff; color: #1e3a8a; }
+
+/* Subtle animated accent under headings */
+h2, h3, h4 {
+  position: relative;
+}
+h2::after, h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), transparent);
+  opacity: 0.5;
+}
+
+/* Ensure colored dashboard cards keep their backgrounds and readable text */
+.card.bg-primary { background-color: var(--primary) !important; color: #ffffff !important; border-color: transparent !important; }
+.card.bg-info { background-color: #0ea5e9 !important; color: #ffffff !important; border-color: transparent !important; }
+.card.bg-success { background-color: #22c55e !important; color: #ffffff !important; border-color: transparent !important; }
+.card.bg-warning { background-color: #f59e0b !important; color: #111827 !important; border-color: transparent !important; }
+
+/* Utilities */
+.shadow-soft { box-shadow: var(--shadow); }
+.rounded-14 { border-radius: 14px; }
+
+
+

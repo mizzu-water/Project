@@ -28,10 +28,7 @@ if ($res) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        http_response_code(400);
-        die('Invalid CSRF token');
-    }
+    // CSRF disabled per user request
     $patient_id = intval($_POST['patient_id']);
     $schedule_id = intval($_POST['schedule_id']);
     $appointment_date = $_POST['appointment_date'];
@@ -76,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Book Appointment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./styles/theme.css" rel="stylesheet">
+    <link href="./assets/css/theme.css" rel="stylesheet">
     <script>
     function validateForm() {
         const patient = document.forms["apptForm"]["patient_id"].value;
@@ -106,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
     <?php endif; ?>
     <form name="apptForm" method="post" onsubmit="return validateForm()">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
+        
         <div class="mb-3">
             <label class="form-label">Select Patient *</label>
             <select name="patient_id" class="form-select" required>
@@ -136,5 +133,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./script/app.js"></script>
+<script src="./assets/js/app.js"></script>
 </html>

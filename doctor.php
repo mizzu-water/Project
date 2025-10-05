@@ -5,10 +5,6 @@ require_once __DIR__ . '/auth/require_staff.php';
 
 $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        http_response_code(400);
-        die('Invalid CSRF token');
-    }
     $name = trim($_POST['name']);
     $specialty = trim($_POST['specialty']);
     $contact = trim($_POST['contact']);
@@ -33,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Add Doctor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./styles/theme.css" rel="stylesheet">
+    <link href="./assets/css/theme.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
     <?php $prefix = ''; include __DIR__ . '/partials/nav.php'; ?>
@@ -44,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form method="post">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
         <div class="mb-3">
             <label class="form-label">Name *</label>
             <input type="text" name="name" class="form-control" required>
@@ -62,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./script/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
 

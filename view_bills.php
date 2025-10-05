@@ -7,10 +7,6 @@ $message = '';
 
 // Generate bill for completed appointments without bills
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_bill'])) {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        http_response_code(400);
-        die('Invalid CSRF token');
-    }
     $appointment_id = intval($_POST['generate_bill']);
 
     // Check if bill already exists
@@ -76,7 +72,7 @@ if ($res2) {
 <head>
     <title>Billing Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./styles/theme.css" rel="stylesheet">
+    <link href="./assets/css/theme.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
     <?php $prefix = ''; include __DIR__ . '/partials/nav.php'; ?>
@@ -87,7 +83,7 @@ if ($res2) {
     <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./script/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 
     <h4>Generate Bill for Completed Appointments</h4>
     <?php if (count($pendingBills) === 0): ?>
@@ -112,7 +108,6 @@ if ($res2) {
                     <td><?= htmlspecialchars($appt['appointment_date']) ?></td>
                     <td>
                         <form method="post" style="display:inline" onsubmit="return confirm('Generate bill?')">
-                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
                             <input type="hidden" name="generate_bill" value="<?= $appt['id'] ?>">
                             <button type="submit" class="btn btn-sm btn-success">Generate Bill</button>
                         </form>

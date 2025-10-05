@@ -15,10 +15,6 @@ if (isset($_SESSION['username'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        http_response_code(400);
-        die('Invalid CSRF token');
-    }
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
     $redirect = trim($_POST['redirect'] ?? '../index.php');
@@ -41,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $redirectParam = isset($_GET['redirect']) ? $_GET['redirect'] : '../index.php';
 // Only accept relative redirects for display
 if (preg_match('/^https?:/i', $redirectParam)) { $redirectParam = '../index.php'; }
-$csrf = ensureCsrfToken();
+$csrf = '';
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +45,7 @@ $csrf = ensureCsrfToken();
 <head>
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../styles/theme.css" rel="stylesheet">
+    <link href="../assets/css/theme.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
 
@@ -62,7 +58,6 @@ $csrf = ensureCsrfToken();
                         <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
                     <?php endif; ?>
                     <form method="post">
-                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf) ?>" />
                         <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirectParam) ?>" />
                         <div class="mb-3">
                             <label class="form-label">Username</label>
@@ -80,7 +75,7 @@ $csrf = ensureCsrfToken();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../script/app.js"></script>
+    <script src="../assets/js/app.js"></script>
 </body>
 </html>
 

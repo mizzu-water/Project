@@ -7,7 +7,6 @@ $message = '';
 
 // Handle Cancel
 if (isset($_POST['action']) && $_POST['action'] === 'cancel') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) { http_response_code(400); die('Invalid CSRF token'); }
     $apptId = intval($_POST['appointment_id']);
     $stmt = $conn->prepare("UPDATE appointments SET status = 'Cancelled' WHERE id = ?");
     $stmt->bind_param("i", $apptId);
@@ -17,7 +16,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'cancel') {
 
 // Handle Reschedule
 if (isset($_POST['action']) && $_POST['action'] === 'reschedule') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) { http_response_code(400); die('Invalid CSRF token'); }
     $apptId = intval($_POST['appointment_id']);
     $newDate = $_POST['new_date'];
 
@@ -58,7 +56,7 @@ if ($res) { while ($row = $res->fetch_assoc()) { $appts[] = $row; } }
 <head>
     <title>Manage Appointments</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./styles/theme.css" rel="stylesheet">
+    <link href="./assets/css/theme.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
     <?php $prefix = ''; include __DIR__ . '/partials/nav.php'; ?>
@@ -99,13 +97,11 @@ if ($res) { while ($row = $res->fetch_assoc()) { $appts[] = $row; } }
                             <td><?= htmlspecialchars($a['status']) ?></td>
                             <td>
                                 <form method="post" class="d-inline-flex align-items-center gap-2">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
                                     <input type="hidden" name="appointment_id" value="<?= $a['id'] ?>">
                                     <input type="date" name="new_date" class="form-control form-control-sm" />
                                     <button name="action" value="reschedule" class="btn btn-sm btn-info">Reschedule</button>
                                 </form>
                                 <form method="post" class="d-inline" onsubmit="return confirm('Cancel this appointment?')">
-                                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
                                     <input type="hidden" name="appointment_id" value="<?= $a['id'] ?>">
                                     <button name="action" value="cancel" class="btn btn-sm btn-secondary">Cancel</button>
                                 </form>
@@ -120,7 +116,7 @@ if ($res) { while ($row = $res->fetch_assoc()) { $appts[] = $row; } }
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./script/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
 

@@ -12,10 +12,6 @@ if ($res) { while ($row = $res->fetch_assoc()) { $doctors[] = $row; } }
 
 // Handle add schedule
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
-        http_response_code(400);
-        die('Invalid CSRF token');
-    }
     $doctor_id = intval($_POST['doctor_id']);
     $day = trim($_POST['day']);
     $start_time = $_POST['start_time'];
@@ -49,7 +45,7 @@ if ($res2) { while ($row = $res2->fetch_assoc()) { $schedules[] = $row; } }
 <head>
     <title>Doctor Schedules</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./styles/theme.css" rel="stylesheet">
+    <link href="./assets/css/theme.css" rel="stylesheet">
 </head>
 <body class="container mt-4">
     <?php $prefix = ''; include __DIR__ . '/partials/nav.php'; ?>
@@ -60,7 +56,6 @@ if ($res2) { while ($row = $res2->fetch_assoc()) { $schedules[] = $row; } }
     <?php endif; ?>
 
     <form method="post" class="mb-4">
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(ensureCsrfToken()) ?>">
         <div class="row g-3">
             <div class="col-md-4">
                 <label class="form-label">Doctor *</label>
@@ -123,7 +118,7 @@ if ($res2) { while ($row = $res2->fetch_assoc()) { $schedules[] = $row; } }
     </table>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="./script/app.js"></script>
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
 
